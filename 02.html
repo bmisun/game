@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <form @submit="compute">
+      <p>{{ first }} 곱하기 {{ second }} ? </p>
+      <input type="number" v-model="value" ref="answer" @keydown.enter="compute" />
+      <button type="submit">입력</button>
+      <p>{{ result ? '정답' : '오답' }}</p>
+    </form>
+  </div>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        first: Math.ceil(Math.random() * 9),
+        second: Math.ceil(Math.random() * 9),
+        value: 0,
+        result: ''
+      },
+      methods: {
+        compute: function (e) {
+          e.preventDefault()
+          this.result = parseInt(this.value) === this.first * this.second
+          this.value = ''
+          this.first = Math.ceil(Math.random() * 9)
+          this.second = Math.ceil(Math.random() * 9)
+          this.$refs.answer.focus()
+        }
+      },
+      mounted: function () {
+        this.value = ''
+        this.$refs.answer.focus()
+      }
+    })
+  </script>
+</body>
+<style scoped>
+  form {
+    text-align: center;
+    input {
+      border-width: 0 0 1px 0;
+    }
+  }
+</style>
+</html>

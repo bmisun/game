@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <form @submit="compute">
+      <p>{{ word }}</p>
+      <input type="text" v-model="value" ref="answer" @keydown.enter="compute" />
+      <button type="submit">확인</button>
+      <p>{{ result }}</p>
+      <p>{{ score ? score + '점' : '' }}</p>
+    </form>
+  </div>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        word: '끝말잇기',
+        value: '',
+        result: '',
+        score: 0,
+        failCnt: 0
+      },
+      methods: {
+        compute: function (e) {
+          e.preventDefault()
+          if (this.word[this.word.length - 1] === this.value[0]) {
+            this.result = '정답'
+            this.score += 10
+          } else {
+            this.result = '오답'
+            this.failCnt += 1
+            if(this.failCnt > 5) {
+              this.score = 0
+            }
+          }
+          this.word = this.value
+          this.value = ''
+          this.$refs.answer.focus()
+        }
+      },
+    })
+  </script>
+</body>
+<style>
+  body {
+    background-color: black;
+    color: white;
+  }
+  form {
+    text-align: center;
+  }
+</style>
+</html>
